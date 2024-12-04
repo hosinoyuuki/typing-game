@@ -1,0 +1,25 @@
+body {
+    background-color: #f0f0f0;
+    font-family: 'Noto Sans JP', 'Noto Sans', sans-serif;
+}
+
+.section {
+    margin-top: 300px;
+}
+
+#kanji-word {
+    font-size: 3em;
+}
+
+#romaji-word {
+    font-size: 3em;
+}
+
+#text-input {
+    font-size: 2em;
+    text-align: center;
+    border: none;
+    border-bottom: 5px solid #000;
+    background-color: #f0f0f0;
+    outline: none;
+}
