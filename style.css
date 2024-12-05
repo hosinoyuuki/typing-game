@@ -5,6 +5,9 @@ body {
 
 .section {
     margin-top: 300px;
+    border: solid 1px #000;
+    padding: 20px;
+    border-radius: 50px;
 }
 
 #kanji-word {
@@ -27,4 +30,49 @@ body {
 .correct {
     color: green;
     font-size: 2em;
+}
+
+#hp-var{
+    height: 100%; /* コンテナの高さに合わせる */
+    background-color: #4caf50; /* 緑色のゲージ */
+    border-radius: 8px; /* 左側を丸める */
+    transition: width 0.3s ease; /* 耐久値が減ったときのアニメーション */
+}
+
+img {
+    width: 100px;
+    height: 100px;
+}
+
+.left-var{
+    font-size: 1.5em;
+
+}
+
+#mode a{
+    text-decoration: none;
+}
+
+
+#start-button {
+    font-size: 2em;
+    border: #000 solid 1px;
+    cursor: pointer;
+}
+
+
+#start-button:hover {
+    background-color: #7ba4cc;
+    transform: scale(1.1);
+    transition: 0.3s;
+}
+#mode:hover {
+    color: #7ba4cc;
+    transform: scale(1.1);
+    transition: 0.3s;
+}
+
+.modeactive {
+    border: #000 solid 3px;
+    border-radius: 10px;
 }

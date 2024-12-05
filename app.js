@@ -1,8 +1,12 @@
-import { word } from './module.js';
+import * as module from './module.js';
 
 const inputElement = document.querySelector('#text-input');
-const kanjiWords = word.map(item => item.漢字);
-const romajiWords = word.map(item => item.ローマ字);
+const genshinWords = module.genshinWord.map(item => item.漢字);
+const genshinRomajiWords = module.genshinWord.map(item => item.ローマ字);
+const lifeWords = module.lifeWord.map(item => item.漢字);
+const lifeRomajiWords = module.lifeWord.map(item => item.ローマ字);
+let kanji = lifeWords 
+let romaji =  lifeRomajiWords
 let currentUserInput = "";
 let currentKanji = "";
 let currentRomaji = "";
@@ -12,13 +16,95 @@ const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 let audioFile = 'typingsound.mp3';
 let audioState = 'key';
 const correctOfNumber = document.querySelector('#correctnumber');
-let correcCount = 0
+let correcCount = 0 
+const hpVar = document.querySelector('#hp-var');
+let hp = 100
+const modeSelectVarElements = document.querySelector('.left-var');
+const modeSelectElements = document.querySelectorAll('#mode');
+const startButtonElements = document.querySelector('#start-button');
+const modeElements = document.querySelector('#select-mode');
+
+inputElement.disabled = true
+
+
+modeSelectElements[0].style.border = 'solid 3px black'
+
+const endGame = () => {
+    startButtonElements.innerText = 'Start Game'
+    modeElements.innerText = 'モード選択'
+    modeSelectVarElements.style.display = 'block'
+    correcCount = 0
+    correctOfNumber.innerText = correcCount
+    console.log(correcCount)
+    inputElement.disabled = true
+    kanjiParagraph.innerText = 'ようこそ';
+    removeSpans()
+}
+
+
+const startGame = () => {
+    startButtonElements.innerText = 'End Game'
+    modeElements.innerText = '現在のモード'
+    kanjiParagraph.style.color = 'black'
+    main()
+    inputElement.disabled = false
+    hp = 100
+    decreaseHp()
+}
+
+
+startButtonElements.addEventListener('click' ,function () {
+    if(startButtonElements.innerText === 'End Game'){
+        endGame()
+    }else if (startButtonElements.innerText === 'Start Game') {
+       startGame()
+    }
+})
+
+for (let mode of modeSelectElements) {
+    mode.addEventListener('click', function (e) {
+        e.preventDefault();
+
+
+        if (mode.innerText === '原神'){
+            kanji = genshinWords 
+            romaji =  genshinRomajiWords
+            modeSelectElements[0].style.border = 'none'
+            modeSelectElements[2].style.border = 'none'
+            modeSelectElements[1].style.border = 'solid 3px black'
+        }else if (mode.innerText === '日常用語'){
+            kanji = lifeWords 
+            romaji = lifeRomajiWords
+            modeSelectElements[1].style.border = 'none'
+            modeSelectElements[2].style.border = 'none'
+            modeSelectElements[0].style.border = 'solid 3px black'
+        }else {
+            modeSelectElements[0].style.border = 'none'
+            modeSelectElements[1].style.border = 'none'
+            modeSelectElements[2].style.border = 'solid 3px black'
+            alert(`まだ対応していません`)
+        }
+        console.log(kanji,romaji)
+        
+    });
+}
+
+const decreaseHp = () => {
+    hp = hp - 1
+    hpVar.style.width = hp + "%"
+    if (hp === 0){
+        kanjiParagraph.innerText = 'You Lose.'
+        kanjiParagraph.style.color = 'red'
+        removeSpans()
+        inputElement.disabled = true
+    }
+}
 
 
 const getRandomWord = () => {
-    const randomIndex = Math.floor(Math.random() * kanjiWords.length);
-    currentKanji = kanjiWords[randomIndex];
-    currentRomaji = romajiWords[randomIndex];
+    const randomIndex = Math.floor(Math.random() * kanji.length);
+    currentKanji = kanji[randomIndex];
+    currentRomaji = romaji[randomIndex];
 };
 
 const displayWordWithSpans = () => {
@@ -50,6 +136,7 @@ inputElement.addEventListener('input', function handleUserInput(evt) {
             span.style.color = 'red';
             inputElement.value = currentUserInput.slice(0, index);
             currentUserInput = inputElement.value;
+            decreaseHp()
         } else {
             span.style.color = 'black';
         }
@@ -59,7 +146,7 @@ inputElement.addEventListener('input', function handleUserInput(evt) {
         main();
         audioState = 'correct';
         playAudio();
-    }
+    } 
 });
 
 async function playAudio() {
@@ -83,7 +170,7 @@ const main = () => {
     inputElement.value = '';
     correctOfNumber.innerText = correcCount
     correcCount++
-
+    
 };
 
-main();
+// main();

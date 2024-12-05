@@ -41,17 +41,28 @@
 
     <div class="container">
         <div class=" row justify-content-center section ">
-            <div class="col  text-center ">
-                <p></p>
+            <div class="col left-var ">
+                <h3 id="select-mode">モード選択</h3>
+                <p id="mode"><a href="" >日常用語</a></p>
+                <p id="mode"><a href="">原神</a></p>
+                <p id="mode"><a href="">NONE</a></p>
             </div>
             <div class="col-6">
-                <p id="kanji-word" class="h3 text-center">こんにちは</p>
+                <p id="kanji-word" class="h3 text-center">ようこそ</p>
                 <p id="romaji-word" class="h4 text-center"></p>
-                <input type="text" id="text-input" class="form-control mt-3">
+                <input type="text" id="text-input" class="form-control mt-3" autocomplete="off">
+                <div class=" mt-5">
+                    <div id="hp-var">HP</div>
+                </div>
             </div>
             <div class="col text-center correct">
                 <p class=" mt-5">正解した回数</p>
                 <p id="correctnumber">0</p>
+            </div>
+        </div>
+        <div class="row mt-5">
+            <div class="col text-center">
+                <button id="start-button" class="btn btn-primary">Start Game</button>
             </div>
         </div>
     </div>
