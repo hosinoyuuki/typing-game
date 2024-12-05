@@ -10,7 +10,6 @@ const pKanji = document.querySelector('#kanji-word');
 const pRomaji = document.querySelector('#romaji-word');
 const audioContext = new (window.AudioContext || window.webkitAudioContext)();
 let sound = 'typingsound.mp3'
-let correctanswer = 'correctanswer.mp3'
 let soundCheck = 'key'
 
 const randomWord = () => {
@@ -25,7 +24,6 @@ const addSpanWord = () => {
         const span = document.createElement('span');
         span.innerText = romaji;
         pRomaji.append(span);
-        console.log(span);
     }
 };
 
@@ -33,9 +31,7 @@ const deleteSpans = () => {
     const spans = document.querySelectorAll('span');
     for (let deleteSpan of spans) {
         deleteSpan.remove();
-        console.log(deleteSpan);
     }
-    console.log(spans);
 };
 
 input.addEventListener('input', function hello(evt) {
@@ -56,7 +52,6 @@ input.addEventListener('input', function hello(evt) {
     });
 
     if (correct) {
-        console.log('ok');
         main();
         soundCheck = 'correct'
         playAudio()
