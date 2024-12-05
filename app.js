@@ -1,96 +1,83 @@
 import { word } from './module.js';
 
-const input = document.querySelector('#text-input');
-const kanjiList = word.map(item => item.漢字);
-const romajiList = word.map(item => item.ローマ字);
-let userInputKey = "";
-let kanjis = "";
-let romajis = "";
-const pKanji = document.querySelector('#kanji-word');
-const pRomaji = document.querySelector('#romaji-word');
-const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-let sound = 'typingsound.mp3'
-let soundCheck = 'key'
+const inputElement = document.querySelector('#text-input');
+const kanjiWords = word.map(item => item.漢字);
+const romajiWords = word.map(item => item.ローマ字);
+let currentUserInput = "";
+let currentKanji = "";
+let currentRomaji = "";
+const kanjiParagraph = document.querySelector('#kanji-word');
+const romajiParagraph = document.querySelector('#romaji-word');
+const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+let audioFile = 'typingsound.mp3';
+let audioState = 'key';
 
-const randomWord = () => {
-    const random = Math.floor(Math.random() * kanjiList.length);
-    kanjis = kanjiList[random];
-    romajis = romajiList[random];
+const getRandomWord = () => {
+    const randomIndex = Math.floor(Math.random() * kanjiWords.length);
+    currentKanji = kanjiWords[randomIndex];
+    currentRomaji = romajiWords[randomIndex];
 };
 
-const addSpanWord = () => {
-    pKanji.innerText = kanjis;
-    for (let romaji of romajis) {
-        const span = document.createElement('span');
-        span.innerText = romaji;
-        pRomaji.append(span);
+const displayWordWithSpans = () => {
+    kanjiParagraph.innerText = currentKanji;
+    for (let romaji of currentRomaji) {
+        const spanElement = document.createElement('span');
+        spanElement.innerText = romaji;
+        romajiParagraph.append(spanElement);
     }
 };
 
-const deleteSpans = () => {
-    const spans = document.querySelectorAll('span');
-    for (let deleteSpan of spans) {
-        deleteSpan.remove();
+const removeSpans = () => {
+    const spanElements = document.querySelectorAll('span');
+    for (let span of spanElements) {
+        span.remove();
     }
 };
 
-input.addEventListener('input', function hello(evt) {
-    soundCheck = 'key'
+inputElement.addEventListener('input', function handleUserInput(evt) {
+    audioState = 'key';
     playAudio();
-    const spans = document.querySelectorAll('span');
-    userInputKey = evt.target.value; // ユーザーの入力を監視
-    let correct = true;
-    spans.forEach((span, index) => {
-        if (userInputKey[index] !== span.innerText) {
-            correct = false;
-            span.style.color = 'red'; // 不正解の場合、文字色を赤に変更
-            input.value = userInputKey.slice(0, index); // 間違った文字を削除
-            userInputKey = input.value;
+    const spanElements = document.querySelectorAll('span');
+    currentUserInput = evt.target.value;
+    let isCorrect = true;
+
+    spanElements.forEach((span, index) => {
+        if (currentUserInput[index] !== span.innerText) {
+            isCorrect = false;
+            span.style.color = 'red';
+            inputElement.value = currentUserInput.slice(0, index);
+            currentUserInput = inputElement.value;
         } else {
-            span.style.color = 'black'; // 正解の場合、文字色を黒に変更
+            span.style.color = 'black';
         }
     });
 
-    if (correct) {
+    if (isCorrect) {
         main();
-        soundCheck = 'correct'
-        playAudio()
+        audioState = 'correct';
+        playAudio();
     }
 });
 
-
 async function playAudio() {
-    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
-    // 音声ファイルを取得
-    if (soundCheck === 'key') {
-        sound = 'typingsound.mp3'
-    } else if (soundCheck === 'correct') {
-        sound = 'correctanswer.mp3'
-    }
+    audioFile = audioState === 'key' ? 'typingsound.mp3' : 'correctanswer.mp3';
 
-    const response = await fetch(sound);
+    const response = await fetch(audioFile);
     const arrayBuffer = await response.arrayBuffer();
-
-    // 音声データをデコード
-    const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
-
-    // 音声ソースを作成
-    const source = audioContext.createBufferSource();
-    source.buffer = audioBuffer;
-
-    // 再生デスティネーション（スピーカー）に接続
-    source.connect(audioContext.destination);
-
-    // 再生
-    source.start();
+    const audioBuffer = await audioCtx.decodeAudioData(arrayBuffer);
+    const audioSource = audioCtx.createBufferSource();
+    audioSource.buffer = audioBuffer;
+    audioSource.connect(audioCtx.destination);
+    audioSource.start();
 }
 
 const main = () => {
-    deleteSpans(); // スパンをリセット
-    randomWord(); // ランダムな単語を抽出
-    addSpanWord(); // ローマ字の一文字ずつスパンに入れる
-    input.value = ''; // 入力フィールドを空白にする
+    removeSpans();
+    getRandomWord();
+    displayWordWithSpans();
+    inputElement.value = '';
 };
 
 main();
