@@ -1,14 +1,17 @@
 body {
     background-color: #f0f0f0;
     font-family: 'Noto Sans JP', 'Noto Sans', sans-serif;
+    height: 100vh;
+
 }
 
 .section {
     margin-top: 300px;
-    border: solid 1px #000;
+    /* border: solid 1px #000; */
     padding: 20px;
     border-radius: 50px;
 }
+
 
 #kanji-word {
     font-size: 3em;
@@ -33,11 +36,12 @@ body {
 }
 
 #hp-var{
-    height: 100%; /* コンテナの高さに合わせる */
-    background-color: #4caf50; /* 緑色のゲージ */
-    border-radius: 8px; /* 左側を丸める */
-    transition: width 0.3s ease; /* 耐久値が減ったときのアニメーション */
+    height: 100%; 
+    background-color: #4caf50;
+    border-radius: 8px; 
+    transition: width 0.3s ease;;
 }
+
 
 img {
     width: 100px;
@@ -56,8 +60,9 @@ img {
 
 #start-button {
     font-size: 2em;
-    border: #000 solid 1px;
+    /* border: #000 solid 1px; */
     cursor: pointer;
+    border-radius: 30px;
 }
 
 
@@ -75,4 +80,12 @@ img {
 .modeactive {
     border: #000 solid 3px;
     border-radius: 10px;
+}
+
+
+.selected {
+    border: solid 3px black;
+    background-color: #f0f0f0;
+    color: #333;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }

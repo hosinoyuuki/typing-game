@@ -27,7 +27,8 @@ const modeElements = document.querySelector('#select-mode');
 inputElement.disabled = true
 
 
-modeSelectElements[0].style.border = 'solid 3px black'
+modeSelectElements[0].style.border = 'solid 1px black';
+modeSelectElements[0].style.borderRadius = '15px';
 
 const endGame = () => {
     startButtonElements.innerText = 'Start Game'
@@ -37,7 +38,7 @@ const endGame = () => {
     correctOfNumber.innerText = correcCount
     console.log(correcCount)
     inputElement.disabled = true
-    kanjiParagraph.innerText = 'ようこそ';
+    kanjiParagraph.innerText = 'Press Start.';
     removeSpans()
 }
 
@@ -66,25 +67,33 @@ for (let mode of modeSelectElements) {
         e.preventDefault();
 
 
-        if (mode.innerText === '原神'){
-            kanji = genshinWords 
-            romaji =  genshinRomajiWords
-            modeSelectElements[0].style.border = 'none'
-            modeSelectElements[2].style.border = 'none'
-            modeSelectElements[1].style.border = 'solid 3px black'
-        }else if (mode.innerText === '日常用語'){
-            kanji = lifeWords 
-            romaji = lifeRomajiWords
-            modeSelectElements[1].style.border = 'none'
-            modeSelectElements[2].style.border = 'none'
-            modeSelectElements[0].style.border = 'solid 3px black'
-        }else {
-            modeSelectElements[0].style.border = 'none'
-            modeSelectElements[1].style.border = 'none'
-            modeSelectElements[2].style.border = 'solid 3px black'
-            alert(`まだ対応していません`)
+        for (let el of modeSelectElements) {
+            el.style.border = 'none';
         }
-        console.log(kanji,romaji)
+
+        switch (mode.innerText) {
+            case '原神':
+                kanji = genshinWords;
+                romaji = genshinRomajiWords;
+                modeSelectElements[1].style.border = 'solid 1px black';
+                modeSelectElements[1].style.borderRadius = '15px';
+                break;
+
+            case '日常用語':
+                kanji = lifeWords;
+                romaji = lifeRomajiWords;
+                modeSelectElements[0].style.border = 'solid 1px black';
+                modeSelectElements[0].style.borderRadius = '15px';
+                break;
+
+            default:
+                modeSelectElements[2].style.border = 'solid 1px black';
+                modeSelectElements[2].style.borderRadius = '15px';
+                alert('まだ対応していません');
+                break;
+        }
+
+        console.log(kanji, romaji);
         
     });
 }
@@ -123,6 +132,7 @@ const removeSpans = () => {
     }
 };
 
+
 inputElement.addEventListener('input', function handleUserInput(evt) {
     audioState = 'key';
     playAudio();
@@ -150,8 +160,6 @@ inputElement.addEventListener('input', function handleUserInput(evt) {
 });
 
 async function playAudio() {
-    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-
     audioFile = audioState === 'key' ? 'typingsound.mp3' : 'correctanswer.mp3';
 
     const response = await fetch(audioFile);
