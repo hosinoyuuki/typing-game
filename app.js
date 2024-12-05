@@ -11,6 +11,9 @@ const romajiParagraph = document.querySelector('#romaji-word');
 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 let audioFile = 'typingsound.mp3';
 let audioState = 'key';
+const correctOfNumber = document.querySelector('#correctnumber');
+let correcCount = 0
+
 
 const getRandomWord = () => {
     const randomIndex = Math.floor(Math.random() * kanjiWords.length);
@@ -78,6 +81,9 @@ const main = () => {
     getRandomWord();
     displayWordWithSpans();
     inputElement.value = '';
+    correctOfNumber.innerText = correcCount
+    correcCount++
+
 };
 
 main();
